@@ -1,0 +1,55 @@
+/* Claude Usage. Colors come from the shell theme: bars use the system accent
+   color (Settings › Appearance), turning to GNOME's warning yellow and error
+   red near the limit; secondary text is the menu's own foreground at reduced
+   opacity (set in extension.js), so it reads well in light and dark styles. */
+
+/* ---- top bar (status area) ---- */
+.claude-usage-panel {
+    spacing: 4px;
+}
+.claude-usage-panel-label {
+    font-feature-settings: "tnum";
+}
+
+/* ---- Quick Settings menu ---- */
+.claude-usage-section {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+.claude-usage-section-box {
+    spacing: 6px;
+}
+.claude-usage-title {
+    font-weight: bold;
+}
+.claude-usage-value {
+    font-feature-settings: "tnum";
+}
+.claude-usage-caption {
+    font-size: 0.9em;
+    font-feature-settings: "tnum";
+}
+
+/* ---- level bars ---- */
+.claude-usage-bar {
+    height: 8px;
+    border-radius: 4px;
+    background-color: rgba(128, 128, 128, 0.25);
+}
+.claude-usage-bar-fill {
+    border-radius: 4px;
+    background-color: -st-accent-color;
+}
+.claude-usage-bar-fill.warning {
+    background-color: #f5c211; /* GNOME palette Yellow 4 */
+}
+.claude-usage-bar-fill.critical {
+    background-color: #f66151; /* GNOME palette Red 1 */
+}
+
+.claude-usage-footer {
+    spacing: 6px;
+}
+.claude-usage-refresh {
+    padding: 6px;
+}

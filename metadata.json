@@ -1,0 +1,9 @@
+{
+  "uuid": "claude-usage@chayotesudado",
+  "name": "Claude Usage",
+  "description": "Claude plan usage in Quick Settings: the 5-hour session percentage in the top bar, and session and weekly bars in the menu.",
+  "shell-version": ["51"],
+  "settings-schema": "org.gnome.shell.extensions.claude-usage",
+  "gettext-domain": "claude-usage",
+  "version-name": "1.0.0"
+}
