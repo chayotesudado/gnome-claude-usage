@@ -2,7 +2,7 @@
 
 Private GNOME Shell extension, for GNOME 51, that shows how much of your Claude plan you have used. It sits beside the Habits extension and works the same way.
 
-It lives in Quick Settings: the status area of the top bar shows the Claude icon, the current 5-hour session's usage as a percentage, or both. The Claude tile in Quick Settings shows or hides that indicator; the tile's arrow opens a menu with a bar for the current session (and how long until it resets) and a bar for the week (and when it resets).
+It lives in Quick Settings: the status area of the top bar shows the Claude icon, the current 5-hour session's usage as a percentage, or both. The Claude tile in Quick Settings shows or hides that indicator; the tile's arrow opens a menu, headed with your plan (e.g. "Claude Pro"), with a bar for the current session (and how long until it resets) and a bar for the week (and when it resets).
 
 It follows the GNOME HIG: bars use the system accent color (Settings › Appearance), turning yellow at 75% and red at 90%; the panel stays monochrome with a symbolic icon; times follow the clock format in Settings › Date & Time.
 

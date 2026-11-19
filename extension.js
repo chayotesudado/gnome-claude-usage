@@ -7,15 +7,14 @@ import St from 'gi://St';
 
 import {Extension, gettext as _, ngettext} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as QuickSettings from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
 import * as Usage from './lib/usage.js';
 
 // Claude plan usage, in Quick Settings. The status area of the top bar shows
 // the Claude icon and/or the 5-hour session's percentage; a Claude tile in the
-// Quick Settings grid shows or hides it, and its arrow opens a menu with the
-// session and weekly bars.
+// Quick Settings grid shows or hides it, and its arrow opens a menu headed
+// with the plan ("Claude Pro") and showing the session and weekly bars.
 //
 // The numbers come from the same report Claude Code's /usage reads, signed in
 // with Claude Code's own login (~/.claude/.credentials.json). The token is only
@@ -31,7 +30,9 @@ function fill(template, ...args) {
     return template.replace(/%(\d)/g, (m, i) => (args[i - 1] ?? m));
 }
 
-const DIM = 178;
+// Secondary text: the menu's foreground at half strength, as GNOME Shell
+// draws its own (e.g. .device-subtitle is transparentize($fg_color, 0.5)).
+const DIM = 128;
 function dim(actor) {
     actor.opacity = DIM;
     return actor;
@@ -108,13 +109,13 @@ class UsageBar extends St.Widget {
 });
 
 // One window in the menu: name and percentage, the bar, and when it resets.
+// A plain box, not a PopupBaseMenuItem: a menu item that can't be activated
+// is drawn :insensitive, which greys out all of its text.
 class WindowSection {
     constructor(menu, title) {
-        const item = new PopupMenu.PopupBaseMenuItem({reactive: false, can_focus: false, style_class: 'claude-usage-section'});
-        menu.addMenuItem(item);
-        this._item = item;
-        const box = new St.BoxLayout({...VERTICAL, x_expand: true, style_class: 'claude-usage-section-box'});
-        item.add_child(box);
+        const box = new St.BoxLayout({...VERTICAL, x_expand: true, style_class: 'claude-usage-section'});
+        menu.box.add_child(box);
+        this._item = box;
 
         const head = new St.BoxLayout();
         this._title = title;
@@ -179,6 +180,7 @@ class ClaudeIndicator extends QuickSettings.SystemIndicator {
 
         const menu = this._toggle.menu;
         menu.box.add_style_class_name('claude-usage-menu');
+        this._plan = null;
         this._sessionSection = new WindowSection(menu, _('Current Session'));
         this._weeklySection = new WindowSection(menu, _('Weekly'));
 
@@ -253,6 +255,7 @@ class ClaudeIndicator extends QuickSettings.SystemIndicator {
                 if (e.matches?.(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                     return;
             }
+            this._plan = creds?.plan ?? null;
             if (!creds)
                 return this._done(cancellable, null, 'signed-out');
             if (creds.expiresAt && creds.expiresAt < Date.now())
@@ -308,6 +311,7 @@ class ClaudeIndicator extends QuickSettings.SystemIndicator {
             : _('Claude usage');
 
         const t = this._toggle;
+        t.menu.setHeader(this._gicon, this._plan ? fill(_('Claude %1'), this._plan) : _('Claude'));
         if (session)
             t.subtitle = fill(_('%1 of session'), pct(session.percent));
         else

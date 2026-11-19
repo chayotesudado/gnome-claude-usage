@@ -1,6 +1,6 @@
 /* Claude Usage. Colors come from the shell theme: bars use the system accent
    color (Settings › Appearance), turning to GNOME's warning yellow and error
-   red near the limit; secondary text is the menu's own foreground at reduced
+   red near the limit; secondary text is the menu's own foreground at half
    opacity (set in extension.js), so it reads well in light and dark styles. */
 
 /* ---- top bar (status area) ---- */
@@ -9,18 +9,20 @@
 }
 
 /* ---- Quick Settings menu ---- */
+/* Each window is laid out like a GNOME menu row (%menuitem padding and
+   regular weight, as Bluetooth devices and Power Mode use), with a caption
+   below in GNOME's caption size: 9pt of the 11pt base. */
 .claude-usage-section {
-    padding-top: 6px;
-    padding-bottom: 6px;
-}
-.claude-usage-section-box {
+    padding: 9px 12px;
     spacing: 6px;
 }
-.claude-usage-title {
-    font-weight: bold;
+.claude-usage-title,
+.claude-usage-value {
+    font-weight: normal;
 }
 .claude-usage-caption {
-    font-size: 0.9em;
+    font-weight: normal;
+    font-size: 0.818em;
 }
 
 /* ---- level bars ---- */

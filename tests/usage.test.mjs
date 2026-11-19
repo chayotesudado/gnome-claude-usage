@@ -22,11 +22,18 @@ test("usage report: missing windows are null", () => {
   assert.deepEqual(U.parseUsage('{"five_hour":null}'), { session: null, weekly: null });
 });
 
-test("credentials: token and expiry; nothing else", () => {
+test("credentials: token, expiry and plan; nothing else", () => {
   const c = U.parseCredentials(JSON.stringify({ claudeAiOauth: {
     accessToken: "t", refreshToken: "r", expiresAt: 5, subscriptionType: "max" } }));
-  assert.deepEqual(c, { token: "t", expiresAt: 5 });
+  assert.deepEqual(c, { token: "t", expiresAt: 5, plan: "Max" });
   assert.equal(U.parseCredentials("{}"), null);
+});
+
+test("plan names", () => {
+  assert.equal(U.planName("pro"), "Pro");
+  assert.equal(U.planName("Enterprise"), "Enterprise");
+  assert.equal(U.planName("free"), null);
+  assert.equal(U.planName(undefined), null);
 });
 
 test("levels, errors, countdown", () => {
