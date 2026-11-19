@@ -13,5 +13,5 @@ It follows the GNOME HIG: bars use the system accent color (Settings › Appeara
   ln -s "$PWD" ~/.local/share/gnome-shell/extensions/claude-usage@chayotesudado
   ```
   then log out and back in, and `gnome-extensions enable claude-usage@chayotesudado`
-- Settings: `gnome-extensions prefs claude-usage@chayotesudado`, or Settings in the menu: show icon, percentage, or both; refresh interval (default 5 minutes; opening the menu also refreshes, at most once a minute)
+- Settings: `gnome-extensions prefs claude-usage@chayotesudado` (or the Extensions app): show icon, percentage, or both; refresh interval (default 5 minutes; opening the menu also refreshes, at most once a minute)
 - Tests: `node --test tests/`

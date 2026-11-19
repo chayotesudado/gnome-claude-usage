@@ -152,13 +152,11 @@ const ClaudeIndicator = GObject.registerClass(
 class ClaudeIndicator extends QuickSettings.SystemIndicator {
     _init(extension) {
         super._init();
-        this._extension = extension;
         this._settings = extension.getSettings();
         this._gicon = Gio.icon_new_for_string(`${extension.path}/icons/claude-symbolic.svg`);
 
         this._usage = null;
         this._error = null;
-        this._updatedAt = 0;
         this._lastFetch = 0;
         this._cancellable = null;
         this._session = new Soup.Session({user_agent: 'gnome-claude-usage', timeout: 20});
@@ -183,25 +181,6 @@ class ClaudeIndicator extends QuickSettings.SystemIndicator {
         menu.box.add_style_class_name('claude-usage-menu');
         this._sessionSection = new WindowSection(menu, _('Current Session'));
         this._weeklySection = new WindowSection(menu, _('Weekly'));
-
-        const footer = new PopupMenu.PopupBaseMenuItem({reactive: false, can_focus: false, style_class: 'claude-usage-footer'});
-        this._status = dim(new St.Label({x_expand: true, y_align: Clutter.ActorAlign.CENTER, style_class: 'claude-usage-caption'}));
-        footer.add_child(this._status);
-        const refresh = new St.Button({
-            style_class: 'icon-button claude-usage-refresh',
-            can_focus: true,
-            accessible_name: _('Refresh'),
-            child: new St.Icon({icon_name: 'view-refresh-symbolic'}),
-        });
-        refresh.connect('clicked', () => this._fetch(true));
-        footer.add_child(refresh);
-        menu.addMenuItem(footer);
-
-        menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        menu.addAction(_('Settings'), () => {
-            Main.panel.statusArea.quickSettings.menu.close();
-            this._extension.openPreferences();
-        });
 
         menu.connect('open-state-changed', (_m, open) => {
             if (open)
@@ -307,7 +286,6 @@ class ClaudeIndicator extends QuickSettings.SystemIndicator {
         this._error = error;
         if (usage) {
             this._usage = usage;
-            this._updatedAt = Date.now();
         } else if (error === 'expired' || error === 'signed-out') {
             // The old numbers can't be trusted to belong to whoever signs in next.
             this._usage = null;
@@ -337,15 +315,6 @@ class ClaudeIndicator extends QuickSettings.SystemIndicator {
 
         this._sessionSection.update(session, resetsIn);
         this._weeklySection.update(this._usage?.weekly, resetsAt);
-
-        if (this._error)
-            this._status.text = ERRORS[this._error]();
-        else if (this._updatedAt)
-            this._status.text = fill(_('Updated %1'),
-                GLib.DateTime.new_from_unix_local(Math.floor(this._updatedAt / 1000))
-                    .format(timeFormat()).trim());
-        else
-            this._status.text = _('Loading…');
     }
 
     destroy() {

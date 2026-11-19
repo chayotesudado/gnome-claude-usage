@@ -7,9 +7,6 @@
 .claude-usage-panel {
     spacing: 4px;
 }
-.claude-usage-panel-label {
-    font-feature-settings: "tnum";
-}
 
 /* ---- Quick Settings menu ---- */
 .claude-usage-section {
@@ -22,12 +19,8 @@
 .claude-usage-title {
     font-weight: bold;
 }
-.claude-usage-value {
-    font-feature-settings: "tnum";
-}
 .claude-usage-caption {
     font-size: 0.9em;
-    font-feature-settings: "tnum";
 }
 
 /* ---- level bars ---- */
@@ -47,9 +40,3 @@
     background-color: #f66151; /* GNOME palette Red 1 */
 }
 
-.claude-usage-footer {
-    spacing: 6px;
-}
-.claude-usage-refresh {
-    padding: 6px;
-}
